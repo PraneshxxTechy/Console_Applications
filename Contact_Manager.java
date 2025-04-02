@@ -11,16 +11,44 @@ class Contact_Manager {
             System.out.println("A contact number already exists in the Contact Manager");
         }
         else{
-            System.out.println("Enter the Phno:");
+            System.out.println("Enter the Phone no:");
             Phno = sc.next();
-            Contacts.put(name, Phno);
+            if(Contacts.containsValue(Phno)){
+                for(Map.Entry<String,String> entry: Contacts.entrySet()){
+                    if(Phno.equals(entry.getValue())){
+                        System.out.println("There already exists Phone number in the name of "+entry.getKey());
+                    }
+                }
+            }
+            else{
+                Contacts.put(name, Phno);
+                System.out.println("Contact has been successfully added");
+            }
         }
     }
     public void updateContact(){
-
+        System.out.println("Enter the name: ");
+        String name = sc.next();
+        if(!Contacts.containsKey(name)){
+            System.out.println("There doesn't exist a contact number with a given name");
+        }
+        else{
+            System.out.println("Entre the new number:");
+            String Phno = sc.next();
+            Contacts.put(name,Phno);
+            System.out.println("Contact has been successfully updated");
+        }
     }
     public void deleteContact(){
-
+        System.out.println("Enter the name: ");
+        String name = sc.next();
+        if(!Contacts.containsKey(name)){
+            System.out.println("There doesn't exist a contact number with a given name");
+        }
+        else{
+            Contacts.remove(name);
+            System.out.println("Contact has been successfully deleted");
+        }
     }
     public void displayContacts(){
         for(Map.Entry<String,String> entry: Contacts.entrySet()){
