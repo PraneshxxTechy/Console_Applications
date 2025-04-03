@@ -1,4 +1,8 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.*;
+import java.text.SimpleDateFormat;
 class Contact_Manager {
     Map<String,String> Contacts = new HashMap<>();
     Scanner sc = new Scanner(System.in);
@@ -58,6 +62,29 @@ class Contact_Manager {
             System.out.println();
         }
     }
+    public void saveContacts(){
+        if(Contacts.isEmpty()){
+            System.out.println("There are no contacts to be saved");
+        }
+        else{
+            String folderName = "Contacts";
+            File folder = new File(folderName );
+            if(!folder.exists()){
+                folder.mkdir();
+            }
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String fileName = folderName + "/contacts_"+timestamp+".txt";
+            try(BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))){
+                for(Map.Entry<String,String> entry : Contacts.entrySet()){
+                    writer.write(entry.getKey() + " : "+entry.getValue());
+                    writer.newLine();
+                }
+                System.out.println("Contacts saved to "+fileName);
+            }catch (Exception e){
+                System.out.println("Error saving contacts");
+            }
+        }
+    }
 }
 class Main{
     public static void main(String[] args) {
@@ -70,6 +97,7 @@ class Main{
             System.out.println("2. Update an existing contact");
             System.out.println("3. Delete an existing contact");
             System.out.println("4. Display contacts");
+            System.out.println("5. Save contacts");
             int entry = sc.nextInt();
             switch(entry){
                 case 1:
@@ -83,6 +111,9 @@ class Main{
                     break;
                 case 4:
                     cm.displayContacts();
+                    break;
+                case 5:
+                    cm.saveContacts();
                     break;
                 default:
                     System.out.println("Invalid Entry");
